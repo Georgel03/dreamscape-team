@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+
+model Dream {
+  id     String @id @default(cuid())
+  userId String
+
+  // Relatii cu user (Cascade = daca stergi userul, se sterg visele)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  title      String
+  content    String // descrierea visului
+  occurredAt DateTime // timestamp visului
+  visibility Visibility @default(PRIVATE)
+
+  tags String[] // auto + manual
+
+  // Analiza emotionala
+  moodUser Mood? // mood ales de user (optional)
+  moodAI   Mood? // mood detectat de AI
+  emotions Json?
+  symbols  String[] // extrase de AI
+
+  // Generare creativa
+  summary String?
+  story   String? // creepypasta/narativa
+
+  // MEDIA - RELATII
+  // 1. Imaginile generate (One-to-Many)
+  mediaImages Media[] @relation("DreamImages")
+
+  // 2. Video-ul final (One-to-One)
+  mediaVideoId String? @unique
+  video        Media?  @relation("DreamVideo", fields: [mediaVideoId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Media {
+  id     String @id @default(cuid())
+  userId String // Optional: ajuta la query-uri
+
+  // Relatia pentru IMAGINI (apartine unui vis)
+  dreamId String?
+  dream   Dream?  @relation("DreamImages", fields: [dreamId], references: [id], onDelete: Cascade)
+
+  // Relatia pentru VIDEO (inversa de la Dream)
+  dreamVideo Dream? @relation("DreamVideo")
+
+  kind      MediaKind
+  url       String
+  meta      Json? // prompt-ul folosit, dimensiuni, etc.
+  createdAt DateTime  @default(now())
+}
+
+model Badge {
+  id   String @id @default(cuid())
+  code String @unique // ex: first_dream
+  name String
+  desc String
+
+  // Relatie inversa
+  users BadgeOnUser[]
+}
+
+model BadgeOnUser {
+  id       String   @id @default(cuid())
+  userId   String
+  badgeId  String
+  earnedAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge Badge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+}
+
+// ENUM-URILE TREBUIE SA FIE INCHISE CORECT AICI
+enum Visibility {
+  PRIVATE
+  PUBLIC
+  UNLISTED
+}
+
+enum Mood {
+  VERY_NEGATIVE
+  NEGATIVE
+  NEUTRAL
+  POSITIVE
+  VERY_POSITIVE
+}
+
+enum MediaKind {
+  IMAGE
+  VIDEO
+}
