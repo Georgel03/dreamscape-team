@@ -1,4 +1,4 @@
-import { PrismaClient } from '../src/generated/prisma/client';
+import { PrismaClient, Prisma } from '../src/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg'
 console.log("DATABASE_URL =", process.env.DATABASE_URL)
 const adapter = new PrismaPg({
@@ -8,9 +8,7 @@ const adapter = new PrismaPg({
 const prisma = new PrismaClient({
   adapter,
 });
-
-async function main() {
-    const badges = [
+const badges = [
         {
             code : 'FIRST_DREAM',
             name : 'Inceputul calatoriei',
@@ -41,24 +39,12 @@ async function main() {
             desc : 'Ai marcat un vis lucid!',
         }
     ];
+export async function main() {
 
     for (const badge of badges) {
-        await prisma.badge.upsert({
-            where: { code: badge.code },
-            update: {},
-            create: badge,
-        });
+       await prisma.badge.create({ data: badge })
     }
-          
-    
 }
 
-main()
-    .then(async () => {
-        await prisma.$disconnect()
-    })
-    .catch(async (e) => {
-        console.error(e)
-        await prisma.$disconnect()
-        process.exit(1)
-    })
+main();
+    
