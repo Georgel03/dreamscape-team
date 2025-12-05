@@ -13,9 +13,6 @@ model Dream {
   id     String @id @default(cuid())
   userId String
 
-  // Relatii cu user (Cascade = daca stergi userul, se sterg visele)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
   title      String
   content    String // descrierea visului
   occurredAt DateTime // timestamp visului
@@ -78,7 +75,6 @@ model BadgeOnUser {
   badgeId  String
   earnedAt DateTime @default(now())
 
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   badge Badge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
 
   @@unique([userId, badgeId])
