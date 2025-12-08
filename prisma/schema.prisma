@@ -63,6 +63,8 @@ model Badge {
   name String
   desc String
 
+  image String
+
   // Relatie inversa
   users BadgeOnUser[]
 }

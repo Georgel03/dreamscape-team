@@ -48,6 +48,7 @@ CREATE TABLE "Badge" (
     "code" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "desc" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
 
     CONSTRAINT "Badge_pkey" PRIMARY KEY ("id")
 );

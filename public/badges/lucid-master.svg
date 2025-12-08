@@ -1,0 +1,16 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mystic" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#c026d3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e879f9;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <circle cx="100" cy="100" r="90" fill="#2e1065" stroke="url(#mystic)" stroke-width="4"/>
+
+  <path d="M100 60C70 60 50 100 50 100C50 100 70 140 100 140C130 140 150 100 150 100C150 100 130 60 100 60ZM100 125C86 125 75 114 75 100C75 86 86 75 100 75C114 75 125 86 125 100C125 114 114 125 100 125Z" 
+        fill="url(#mystic)"/>
+  <circle cx="100" cy="100" r="10" fill="white"/>
+  
+  <text x="50%" y="175" text-anchor="middle" fill="#e879f9" font-family="Arial" font-size="18" font-weight="bold"></text>
+</svg>
