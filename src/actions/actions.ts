@@ -12,7 +12,7 @@ export async function testVideoUploadAction() {
     
     const fileName = `test-video-${uuidv4()}`;
 
-    // Apeleaza functia ta din storage.ts
+    // Apeleaza functia din storage.ts
     const publicUrl = await uploadVideoFromurlToStorage(dummyVideoUrl, fileName);
 
     console.log("Video Upload reusit:", publicUrl);
