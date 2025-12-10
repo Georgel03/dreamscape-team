@@ -8,8 +8,6 @@ export async function testVideoUploadAction() {
   try {
     console.log("Incep testul de VIDEO upload...");
 
-    // Folosim un video public mic de test (Big Buck Bunny sample)
-    // Simulăm URL-ul temporar pe care l-ar da Gemini
     const dummyVideoUrl = "https://www.w3schools.com/html/mov_bbb.mp4";
     
     const fileName = `test-video-${uuidv4()}`;
@@ -29,8 +27,7 @@ export async function testVideoUploadAction() {
 
 export async function testUploadAction() {
   try {
-    // Acesta este un "Punct Roșu" de 1x1 pixeli în format Base64.
-    // Simulăm ce ar trimite Gemini.
+
     const dummyBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
     
     const fileName = `test-${uuidv4()}`;
@@ -48,3 +45,4 @@ export async function testUploadAction() {
     return { success: false, error: error.message };
   }
 }
+
