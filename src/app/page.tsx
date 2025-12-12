@@ -1,9 +1,9 @@
-import Navbar from '@/components/Navbar';
-import Hero from '@/components/Hero';
-import Features from '@/components/Features';
-import Pricing from '@/components/Pricing';
-import Footer from '@/components/Footer';
-import CollectiveSubconscious from '@/components/CollectiveSubconscious';
+import Navbar from '@/src/components/Navbar';
+import Hero from '@/src/components/Hero';
+import Features from '@/src/components/Features';
+import Pricing from '@/src/components/Pricing';
+import Footer from '@/src/components/Footer';
+import CollectiveSubconscious from '@/src/components/CollectiveSubconscious';
 
 export default function Home() {
   return (
