@@ -1,38 +1,28 @@
 'use server'
+
 import { prisma } from '../lib/prisma';
 
-export  async function getBadgesForUser(userId: string) {
+export async function getBadgesForUser(userId: string) {
 
-    if (!userId) {
-        return { success: false, error: "User ID este necesar." };
-    }
+    if (!userId) return { success: false, error: "UserID lipsește" };
     try {
+        const badges = await prisma.badgeOnUser.findMany({
+            where: { userId },
+            select: { 
+                badge : true,
+                earnedAt : true
+            },
+            orderBy: {
+                earnedAt : 'desc'
+            }
+        });
+        return { success: true, data: badges.map(b => ({
+            ...b.badge,
+            earnedAt: b.earnedAt
+        }))};
 
-    const userBadges =  await prisma.badgeOnUser.findMany({
-        where: {
-            userId: userId,
-        },
-        include: {
-            badge: true,
-        },
-        orderBy: {
-                earnedAt: 'desc' 
-        }
-    });
-
-    const formattedBadges = userBadges.map((record) => ({
-            id: record.badge.id,
-            name: record.badge.name,
-            code: record.badge.code,
-            image: record.badge.image,
-            desc: record.badge.desc,
-            earnedAt: record.earnedAt, 
-        }));
-
-    return { success: true, data: formattedBadges };
+        
     } catch (error) {
-        console.error("Eroare la preluarea badge-urilor:", error);
-        return { success: false, error: "A apărut o eroare la preluarea badge-urilor." };
+        return { success: false, error: 'Eroare la preluarea insignei.' };
     }
-
 }

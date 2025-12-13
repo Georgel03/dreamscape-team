@@ -78,7 +78,7 @@ export async function checkAndAwardBadges(userId: string, dreamId: string) {
     }
 
     if (dream.tags.includes('lucid') || dream.content.toLowerCase().includes('lucid')) {
-        await awardBadge('DREAM_LUCID');
+        await awardBadge('Dream_Lucid');
     }
 
     if (totalDreams > 2) {
