@@ -1,12 +1,21 @@
 import { createClient } from "@supabase/supabase-js";
-const { Buffer } = require("buffer");
 
-const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
-const supabase = createClient(supabaseURL, serviceKey);
+function getSupabaseAdmin() {
+
+    const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
+    
+
+    if (!supabaseURL || !serviceKey) {
+        throw new Error("Lipsesc cheile Supabase din .env");
+    }
+    
+    return createClient(supabaseURL, serviceKey);
+}
 
 export async function uploadBase64ToStorage(base64String : string, filename: string) {
 
+    const supabase = getSupabaseAdmin();
     const arrayBuffer = Buffer.from(base64String, 'base64'); 
     const filePath = `images/${filename}.png`;
 
@@ -35,6 +44,7 @@ export async function uploadBase64ToStorage(base64String : string, filename: str
 export async function uploadVideoFromurlToStorage(videoUrl : string, filename: string) {
 
     try {
+        const supabase = getSupabaseAdmin();
         const response = await fetch(videoUrl);
         if (!response.ok) {
             throw new Error(`Eroare la descarcarea video-ului de la Google: ${response.statusText}`);

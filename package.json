@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.35.6",
-    "@google/genai": "^1.31.0",
+    "@google/genai": "^1.33.0",
     "@google/generative-ai": "^0.24.1",
     "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^7.1.0",
@@ -25,8 +25,8 @@
     "postprocessing": "^6.38.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "uuid": "^13.0.0",
-    "three": "^0.181.2"
+    "three": "^0.181.2",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@iconify/react": "^6.0.2",
