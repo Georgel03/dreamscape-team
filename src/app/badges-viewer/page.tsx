@@ -7,6 +7,7 @@ import { Trophy, Calendar, Lock, Loader2, Star } from 'lucide-react';
 import Navbar from '../../components/Navbar'; 
 import Footer from '../../components/Footer';
 
+
 export default function BadgesPage() {
   const { user, isLoaded, isSignedIn } = useUser();
   const [badges, setBadges] = useState<any[]>([]);

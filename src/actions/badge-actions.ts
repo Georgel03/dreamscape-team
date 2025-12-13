@@ -35,5 +35,4 @@ export  async function getBadgesForUser(userId: string) {
         return { success: false, error: "A apărut o eroare la preluarea badge-urilor." };
     }
 
-
 }
