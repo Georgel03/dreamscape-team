@@ -5,10 +5,21 @@ import { v4 as uuidv4 } from 'uuid';
 import { uploadBase64ToStorage } from "../lib/storage";
 
 
-const GOOGLE_AUTH = new GoogleAuth({
+const authConfig: any = {
   scopes: ['https://www.googleapis.com/auth/cloud-platform'],
-  credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY || '{}'), 
-});
+};
+
+if (process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
+  try {
+    authConfig.credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
+  } catch (e) {
+    console.error("❌ Error parsing GOOGLE_SERVICE_ACCOUNT_KEY:", e);
+  }
+} else {
+  authConfig.keyFilename = 'service-account-key-1.json';
+}
+
+const GOOGLE_AUTH = new GoogleAuth(authConfig);
 const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT_ID;
 const LOCATION_ID = "us-central1";
 const API_ENDPOINT = "us-central1-aiplatform.googleapis.com";
