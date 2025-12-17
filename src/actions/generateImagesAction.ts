@@ -7,7 +7,7 @@ import { uploadBase64ToStorage } from "../lib/storage";
 
 const GOOGLE_AUTH = new GoogleAuth({
   scopes: ['https://www.googleapis.com/auth/cloud-platform'],
-  keyFilename: 'service-account-key-1.json', 
+  credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY || '{}'), 
 });
 const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT_ID;
 const LOCATION_ID = "us-central1";
