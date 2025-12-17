@@ -3,7 +3,6 @@ import { prisma } from '../lib/prisma';
 
 export async function checkAndAwardBadges(userId: string, dreamId: string) {
 
-
     const dream = await prisma.dream.findUnique({
         where: {
             id : dreamId
@@ -78,7 +77,7 @@ export async function checkAndAwardBadges(userId: string, dreamId: string) {
     }
 
     if (dream.tags.includes('lucid') || dream.content.toLowerCase().includes('lucid')) {
-        await awardBadge('DREAM_LUCID');
+        await awardBadge('Dream_Lucid');
     }
 
     if (totalDreams > 2) {

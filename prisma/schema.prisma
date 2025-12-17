@@ -19,8 +19,8 @@ model Dream {
   tags String[] // auto + manual
 
   // Analiza emotionala
-  moodUser Mood? // mood ales de user (optional)
-  moodAI   Mood? // mood detectat de AI
+  moodUser String? // mood ales de user (optional)
+  moodAI   String? // mood detectat de AI
   emotions Json?
   symbols  String[] // extrase de AI
 
@@ -80,19 +80,10 @@ model BadgeOnUser {
   @@unique([userId, badgeId])
 }
 
-// ENUM-URILE TREBUIE SA FIE INCHISE CORECT AICI
+
 enum Visibility {
   PRIVATE
   PUBLIC
-  UNLISTED
-}
-
-enum Mood {
-  VERY_NEGATIVE
-  NEGATIVE
-  NEUTRAL
-  POSITIVE
-  VERY_POSITIVE
 }
 
 enum MediaKind {
