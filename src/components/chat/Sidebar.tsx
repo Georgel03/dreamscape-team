@@ -1,7 +1,9 @@
-import { Sparkles, PanelLeftClose, Plus, MessageSquare, Archive,  Crown, MoreHorizontal, X, Trophy, BarChart2 } from 'lucide-react';
-import { SignInButton, SignedIn, SignedOut, UserButton, useUser, useClerk } from '@clerk/nextjs';
+'use client';
+
+import { Sparkles, PanelLeftClose, Plus, MessageSquare, Crown, MoreHorizontal, Trophy, BarChart2 } from 'lucide-react';
+import { useUser, useClerk } from '@clerk/nextjs';
 import Link from 'next/link';
-import { User } from '@clerk/nextjs/server';
+import { usePathname } from 'next/navigation';
 
 // Sidebar Props
 interface SidebarProps {
@@ -18,6 +20,21 @@ export default function Sidebar({ isOpen, toggleSidebar, isMobileOpen, closeMobi
   // Get user info and Clerk functions
   const { user } = useUser();
   const { openUserProfile } = useClerk();
+  const pathname = usePathname();
+
+  const getLinkClasses = (path: string) => {
+    const isActive = pathname === path;
+    return `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
+      isActive 
+        ? 'bg-white/5 text-white' // Stil ACTIV
+        : 'text-slate-400 hover:bg-white/5 hover:text-white' // Stil INACTIV
+    }`;
+  };
+
+  const getIconClasses = (path: string) => {
+    const isActive = pathname === path;
+    return `w-4.5 h-4.5 ${isActive ? 'text-[#C393F5]' : 'text-current'}`;
+  };
 
   return (
     <>
@@ -48,12 +65,14 @@ export default function Sidebar({ isOpen, toggleSidebar, isMobileOpen, closeMobi
         
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
+          
+          
+          <Link href="/" className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
             <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-slate-700 to-slate-600 flex items-center justify-center text-white">
               <Sparkles className="w-4 h-4" />
             </div>
             <span className="text-white font-medium text-lg tracking-tight">Oneiric ®</span>
-          </div>
+          </Link>
           
           {/* Close Button: On mobile use closeMobile, on Desktop use toggleSidebar */}
           <button 
@@ -76,7 +95,6 @@ export default function Sidebar({ isOpen, toggleSidebar, isMobileOpen, closeMobi
         </div>
 
         {/* Content Container */}
-        {/* Using whitespace-nowrap to avoid the text to go wrong at the new line when it close on desktop */}
         <div className={`flex flex-col flex-1 min-w-[240px] whitespace-nowrap ${(!isOpen && 'md:invisible')} transition-all duration-200`}>
             
             {/* New Chat Button */}
@@ -91,16 +109,18 @@ export default function Sidebar({ isOpen, toggleSidebar, isMobileOpen, closeMobi
             <div className="flex-1 overflow-y-auto">
               <div className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-4 px-2">Features</div>
               <nav className="space-y-1">
-              <Link href="/app" className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-white/5 text-white">
-                <MessageSquare className="w-4.5 h-4.5 text-[#C393F5]" />
-                <span className="text-sm">Chat</span>
-              </Link>
-                <Link href="/badges-viewer" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 hover:text-white transition-colors">
-                  <Trophy className="w-4.5 h-4.5" />
+                <Link href="/app" className={getLinkClasses('/app')}>
+                  <MessageSquare className={getIconClasses('/app')} />
+                  <span className="text-sm">Chat</span>
+                </Link>
+
+                <Link href="/badges-viewer" className={getLinkClasses('/badges-viewer')}>
+                  <Trophy className={getIconClasses('/badges-viewer')} />
                   <span className="text-sm">Badges</span>
                 </Link>
-                <Link href="#" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 hover:text-white transition-colors">
-                  <BarChart2 className="w-4.5 h-4.5" />
+
+                <Link href="/visualizations" className={getLinkClasses('/visualizations')}>
+                  <BarChart2 className={getIconClasses('/visualizations')} />
                   <span className="text-sm">Statistics</span>
                 </Link>
               </nav>
