@@ -1,16 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
-const { Buffer } = require("buffer");
+import { supabaseAdmin } from "./supabase";
+import { v4 as uuidv4 } from 'uuid';
+export async function uploadBase64ToStorage(base64String : string, userId : string) : Promise<string> {
 
-const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
-const supabase = createClient(supabaseURL, serviceKey);
-
-export async function uploadBase64ToStorage(base64String : string, filename: string) {
-
+    
     const arrayBuffer = Buffer.from(base64String, 'base64'); 
-    const filePath = `images/${filename}.png`;
+    const filePath = `images/${userId}/${uuidv4()}.png`;
 
-    const { data, error } = await supabase.storage
+    const { data, error } = await supabaseAdmin.storage
         .from('dream-assets')
         .upload(filePath, arrayBuffer, {
             cacheControl: '3600',
@@ -20,10 +17,10 @@ export async function uploadBase64ToStorage(base64String : string, filename: str
 
     if (error) {
         console.error("Supabase Upload Error:", error);
-        throw new Error("Nu am putut incarca imaginea.");
+        throw new Error("Cannot upload image to storage.");
     }
 
-    const { data : publicData } = supabase
+    const { data : publicData } = supabaseAdmin
         .storage
         .from('dream-assets')
         .getPublicUrl(filePath);
@@ -32,18 +29,19 @@ export async function uploadBase64ToStorage(base64String : string, filename: str
 
 }
 
-export async function uploadVideoFromurlToStorage(videoUrl : string, filename: string) {
+export async function uploadVideoFromurlToStorage(videoUrl : string, userId: string) {
 
     try {
+        
         const response = await fetch(videoUrl);
         if (!response.ok) {
             throw new Error(`Eroare la descarcarea video-ului de la Google: ${response.statusText}`);
         }
         const arrayBuffer = await response.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
-        const filePath = `videos/${filename}.mp4`;
+        const filePath = `videos/${userId}/${uuidv4()}.mp4`;
 
-        const { data, error } = await supabase.storage
+        const { data, error } = await supabaseAdmin.storage
             .from('dream-assets')
             .upload(filePath, buffer, {
                 cacheControl: '3600',
@@ -56,7 +54,7 @@ export async function uploadVideoFromurlToStorage(videoUrl : string, filename: s
             throw error;
         }
 
-        const { data : publicData } = supabase
+        const { data : publicData } = supabaseAdmin
             .storage
             .from('dream-assets')
             .getPublicUrl(filePath);
@@ -68,3 +66,5 @@ export async function uploadVideoFromurlToStorage(videoUrl : string, filename: s
         throw new Error("Nu am putut incarca videoclipul.");
     }
 }
+
+// Conflict resolution fix

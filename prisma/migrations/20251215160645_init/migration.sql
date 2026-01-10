@@ -1,8 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Visibility" AS ENUM ('PRIVATE', 'PUBLIC', 'UNLISTED');
-
--- CreateEnum
-CREATE TYPE "Mood" AS ENUM ('VERY_NEGATIVE', 'NEGATIVE', 'NEUTRAL', 'POSITIVE', 'VERY_POSITIVE');
+CREATE TYPE "Visibility" AS ENUM ('PRIVATE', 'PUBLIC');
 
 -- CreateEnum
 CREATE TYPE "MediaKind" AS ENUM ('IMAGE', 'VIDEO');
@@ -16,8 +13,8 @@ CREATE TABLE "Dream" (
     "occurredAt" TIMESTAMP(3) NOT NULL,
     "visibility" "Visibility" NOT NULL DEFAULT 'PRIVATE',
     "tags" TEXT[],
-    "moodUser" "Mood",
-    "moodAI" "Mood",
+    "moodUser" TEXT,
+    "moodAI" TEXT,
     "emotions" JSONB,
     "symbols" TEXT[],
     "summary" TEXT,

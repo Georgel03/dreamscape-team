@@ -1,4 +1,4 @@
-'use client'; // Necessario per gestire lo stato del menu mobile
+'use client';
 
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
@@ -14,7 +14,6 @@ export default function Navbar() {
   };
 
   return (
-    // 1. Container esterno
     <nav className="fixed top-6 left-0 right-0 z-50 flex flex-col items-center px-4">
 
       {/* 2. La "Pillola" principale */}
@@ -25,7 +24,7 @@ export default function Navbar() {
           <Link href="/" className="text-white font-medium tracking-tight text-sm uppercase">Oneiric ®</Link>
         </div>
 
-        {/* DESKTOP LINKS (Nascosti su mobile) */}
+        {/* DESKTOP LINKS */}
         <div className="hidden md:flex items-center gap-8">
           <a href={getLink('#features')} className="text-sm text-slate-400 hover:text-white transition-colors font-medium">Technology</a>
           <a href={getLink('#visuals')} className="text-sm text-slate-400 hover:text-white transition-colors font-medium">Visuals</a>
@@ -53,7 +52,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* 3. MENU MOBILE DROPDOWN (Visibile quando isOpen è true) */}
+      {/* MOBILE MENU DROPDOWN */}
       {isOpen && (
         <div className="absolute top-full mt-2 w-full max-w-5xl px-4 md:hidden">
           <div className="w-full bg-[#050505]/95 backdrop-blur-xl border border-white/10 rounded-3xl p-6 flex flex-col gap-6 shadow-2xl animate-in fade-in slide-in-from-top-5 duration-200">
@@ -67,9 +66,46 @@ export default function Navbar() {
 
             <div className="w-full h-px bg-white/10"></div>
 
-            <button className="w-full py-3 rounded-xl border border-[#C393F5]/30 bg-[#C393F5]/10 text-white font-medium hover:bg-[#C393F5]/20 transition-all shadow-[0_0_15px_rgba(195,147,245,0.3)]">
-              Sign Up Now
-            </button>
+            {/* LOGICA AUTH MOBILE */}
+            <div className="w-full flex justify-center">
+              <SignedOut>
+                <Link href="/sign-up" className="w-full">
+                  <button className="w-full py-3 rounded-xl border border-[#C393F5]/30 bg-[#C393F5]/10 text-white font-medium hover:bg-[#C393F5]/20 transition-all shadow-[0_0_15px_rgba(195,147,245,0.3)]">
+                    Sign Up Now
+                  </button>
+                </Link>
+              </SignedOut>
+
+              <SignedIn>
+                  <div className="flex items-center justify-between w-full bg-[#C393F5]/10 rounded-xl p-2 border border-[#C393F5]/30 shadow-[0_0_15px_rgba(195,147,245,0.2)]">
+                    <button 
+                      onClick={() => openUserProfile()} 
+                      className="flex items-center gap-3 flex-1 text-left px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
+                    >
+                        <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#C393F5]/50">
+                           <img 
+                             src={user?.imageUrl} 
+                             alt="Profile" 
+                             className="w-full h-full object-cover"
+                           />
+                        </div>
+                        <div className="flex flex-col">
+                           <span className="text-sm text-white font-medium leading-none mb-0.5">My Account</span>
+                           <span className="text-[10px] text-[#C393F5]/80 uppercase tracking-wider">Manage Profile</span>
+                        </div>
+                    </button>
+                    <div className="w-px h-8 bg-[#C393F5]/20 mx-1"></div>
+                    <button 
+                      onClick={() => signOut(() => setIsOpen(false))}
+                      className="p-2.5 text-[#C393F5] hover:text-white hover:bg-[#C393F5]/20 rounded-lg transition-colors"
+                      title="Sign Out"
+                    >
+                      <LogOut className="w-5 h-5" />
+                    </button>
+                  </div>
+              </SignedIn>
+            </div>
+
           </div>
         </div>
       )}

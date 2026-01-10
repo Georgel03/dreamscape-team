@@ -3,7 +3,6 @@ import { prisma } from '../lib/prisma';
 
 export async function checkAndAwardBadges(userId: string, dreamId: string) {
 
-
     const dream = await prisma.dream.findUnique({
         where: {
             id : dreamId
